@@ -7,10 +7,13 @@ import xml.dom.minidom
 
 printCount = 0
 
-theQuery = u"{query}"
+theQuery = "{query}"
+theQuery = "eliminate"
 theQuery = theQuery.strip()
 searchURL = 'http://dict-co.iciba.com/api/dictionary.php?key=920884E0432F63B57D8E982006557B06&w='
 URLDoc = xml.dom.minidom.parse(urllib2.urlopen(searchURL + theQuery))
+
+print searchURL + theQuery
     
 def printItem(title, subTitle = ''):
     global printCount
@@ -36,11 +39,11 @@ for index in range(len(pronunciations)):
 
 acceptations = dict.getElementsByTagName('acceptation')
 for index in range(len(acceptations)):
-    acceptation = acceptations[index].firstChild.data
+    acceptation = acceptations[index].firstChild.data.replace("<", "[").replace(">", "]")
     posRaw = pos = dict.getElementsByTagName('pos')[index].firstChild
     pos = ''
     if posRaw:
-        pos = dict.getElementsByTagName('pos')[index].firstChild.data.replace("&", "and")
+        pos = dict.getElementsByTagName('pos')[index].firstChild.data.replace("&", " and")
     printItem(acceptation, pos)
     
 scentences = dict.getElementsByTagName('sent')
